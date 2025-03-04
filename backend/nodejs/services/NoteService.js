@@ -28,6 +28,31 @@ export default class NoteService {
         }
     }
 
+    // New method to get a single note by its 'id'
+    async getNote(id) {
+        try {
+            const result = await this.dbContext.query("SELECT * FROM Notes WHERE id = ?", [id]);
+
+            // Ensure we have a valid result
+            if (result && result.length > 0) {
+                const row = result[0]; // Assuming 'id' is unique, we take the first result
+
+                // Convert all keys to lowercase
+                const formattedRow = Object.fromEntries(
+                    Object.entries(row).map(([key, value]) => [key.toLowerCase(), value])
+                );
+
+                return new Note(formattedRow); // Return a Note object
+            } else {
+                console.log(`Note with id ${id} not found`);
+                return null; // Return null if the note is not found
+            }
+        } catch (error) {
+            console.error('Error querying Notes table:', error);
+            return null; // Return null if there is an error
+        }
+    }
+
     async listNotes() {
         try {
             const result = await this.dbContext.query("SELECT * FROM Notes", []);
@@ -46,16 +71,6 @@ export default class NoteService {
         } catch (error) {
             console.error('Error querying Notes table:', error);
             return []; // Return an empty array if there's an error
-        }
-    }       
-
-    async getNote(padID) {
-        try {
-            const result = await this.dbContext.query("SELECT * FROM Notes WHERE Id = ?", [padID]);
-            return result.rows.length > 0 ? new Note(result.rows[0]) : null; // Convert row to Note object
-        } catch (error) {
-            console.error("Error querying Notes table:", error);
-            return null; // Return null on error
         }
     }
 }

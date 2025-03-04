@@ -1,24 +1,56 @@
 <div class="notesList">
-    <% if (notes.length > 0) { %>
+    <% if (notes.length> 0) { %>
         <table class="notes-table">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Content</th>
+                    <th>Action</th> <!-- Added Action column for buttons -->
                 </tr>
             </thead>
             <tbody>
-                <% notes.forEach(note => { %>
+                <% notes.forEach(note=> { %>
                     <tr>
-                        <td><%= note.id %></td>
-                        <td><%= note.name %></td>
-                        <td><%= note.content %></td>
+                        <td>
+                            <%= note.id %>
+                        </td>
+                        <td>
+                            <%= note.name %>
+                        </td>
+                        <td>
+                            <%= note.content %>
+                        </td>
+                        <td>
+                            <button class="btn-view" data-id="<%= note.id %>">View</button> <!-- View button -->
+                        </td>
                     </tr>
-                <% }); %>
+                    <% }); %>
             </tbody>
         </table>
-    <% } else { %>
-        <p>No notes found.</p>
-    <% } %>
+        <% } else { %>
+            <p>No notes found.</p>
+            <% } %>
 </div>
+
+<!-- JavaScript to handle button click and make an AJAX request -->
+<!-- JavaScript to handle button click and make an AJAX request -->
+<script>
+    document.querySelectorAll('.btn-view').forEach(button => {
+        button.addEventListener('click', function () {
+            const noteId = this.getAttribute('data-id');
+
+            // Make an AJAX request to the controller to get the existing note
+            fetch(`/notes/getExistingNote?id=${noteId}`)
+                .then(response => response.text()) // Get the response as text/HTML
+                .then(html => {
+                    // For example, inject the HTML into a container on your page
+                    document.querySelector('#ajaxContent').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+        });
+    });
+</script>

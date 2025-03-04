@@ -1,17 +1,26 @@
 import axios from "axios";
 import Note from '../models/Note.js';
-// import ExampleItem from '../models/exampleItem.js';
+import NoteService from "../services/NoteService.js";
 
 export default class NotesController {
     constructor(appData) {
         this.appData = appData;
+        this.noteService = new NoteService(appData.db);
     }
 
     async index(req, res) {
         res.render("index.ejs", { ...this.appData, user: req.session.user });
     }
 
-
+    async listNotes(req, res) {
+        try {
+            const notes = await this.noteService.listNotes(); // Fetch notes
+            res.renderPartial("partials/list", { ...this.appData, notes }); // Render the list view
+        } catch (error) {
+            console.error("Error fetching notes:", error);
+            res.status(500).send("Error loading notes.");
+        }
+    }
 
     async getToken() {
         try {

@@ -1,0 +1,47 @@
+.notesList {
+    // Styling for the overall list
+    .notes-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+
+        thead {
+            background-color: #f4f4f4;
+
+            th {
+                padding: 12px 15px;
+                text-align: left;
+                font-weight: bold;
+                color: #333;
+            }
+        }
+
+        tbody {
+            tr {
+                border-bottom: 1px solid #ddd;
+
+                &:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+
+                &:hover {
+                    background-color: #f1f1f1;
+                }
+            }
+
+            td {
+                padding: 12px 15px;
+                text-align: left;
+                color: #555;
+            }
+        }
+    }
+
+    // Styling for no notes found message
+    p {
+        color: #555;
+        font-size: 16px;
+        font-style: italic;
+    }
+}

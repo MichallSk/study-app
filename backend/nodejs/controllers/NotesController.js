@@ -96,6 +96,11 @@ export default class NotesController extends BaseController{
         return res.render("notesAI", { ...this.appData});
     }
 
+    // Renders the Notes with AI page
+    async research (req, res) {
+        return res.render("research", { ...this.appData});
+    }
+
     async newNoteVersion(req, res) {
 
         const noteID = req.query.id;
